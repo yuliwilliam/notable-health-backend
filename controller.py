@@ -1,4 +1,5 @@
 import json
+import os
 import uuid
 
 from flask import request
@@ -11,20 +12,20 @@ logger = initialize_logger('controller.py')
 
 
 def load_doctors_data():
-    return json.load(open('./doctors.json', ))
+    return json.load(open(os.getenv('DOCTORS_DATA_FILE'), ))
 
 
 def load_appointments_data():
-    return json.load(open('./appointments.json', ))
+    return json.load(open(os.getenv('APPOINTMENTS_DATA_FILE'), ))
 
 
 def update_doctors_data(doctors):
-    with open('./doctors.json', 'w') as f:
+    with open(os.getenv('DOCTORS_DATA_FILE'), 'w') as f:
         json.dump(doctors, f)
 
 
 def update_appointments_data(appointments):
-    with open('./appointments.json', 'w') as f:
+    with open(os.getenv('APPOINTMENTS_DATA_FILE'), 'w') as f:
         json.dump(appointments, f)
 
 
