@@ -29,6 +29,14 @@ def update_appointments_data(appointments):
         json.dump(appointments, f)
 
 
+def is_number(number):
+    try:
+        float(number)
+        return True
+    except ValueError:
+        return False
+
+
 def get_doctors():
     return jsonify(load_doctors_data()), 200
 
@@ -39,6 +47,9 @@ def get_appointments():
         return 'invalid request, missing data', 422
 
     doctor_id, time = body.get('doctor id'), body.get('time')
+
+    if not is_number(time):
+        return 'invalid time', 422
 
     if doctor_id not in [doctor['id'] for doctor in load_doctors_data()]:
         return 'invalid doctor id', 422
@@ -73,6 +84,8 @@ def book_appointment():
     first_name, last_name, time, kind, doctor_id = body.get('first name'), body.get('last name'), body.get(
         'time'), body.get('kind'), body.get('doctor id')
 
+    if not is_number(time):
+        return 'invalid time', 422
     if kind not in ['New Patient', 'Follow-up']:
         return 'invalid appointment kind', 422
     if doctor_id not in [doctor['id'] for doctor in load_doctors_data()]:
